@@ -57,14 +57,15 @@ function App() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          credentials: "include",
         },
         body: JSON.stringify({ text, username, password }),
       });
       const data = await response.json();
-      // const data = { data: "سلام این یک پاسخ تستی است" };
+      // const data = { message: "سلام این یک پاسخ تستی است" };
       const newMessage = {
         question: text,
-        response: data.data,
+        response: data?.message,
       };
       const newMessages =
         newTranscript.length > 1
@@ -73,7 +74,7 @@ function App() {
       setMessages(newMessages);
 
       // Convert the response text to voice
-      playResponseText(data.data);
+      playResponseText(data?.message);
     } catch (error) {
       console.error("Error sending text to backend:", error);
     }
