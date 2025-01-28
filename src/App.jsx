@@ -53,18 +53,18 @@ function App() {
     setMessages(newTranscript);
     setResponseLoading(true);
     try {
-      // const response = await fetch("http://localhost:5000/process-text", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ text, username, password }),
-      // });
-      // const data = await response.json();
-      const data = { response: "سلام این یک پاسخ تستی است" };
+      const response = await fetch("http://127.0.0.1:8000/api/process/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text, username, password }),
+      });
+      const data = await response.json();
+      // const data = { data: "سلام این یک پاسخ تستی است" };
       const newMessage = {
         question: text,
-        response: data.response,
+        response: data.data,
       };
       const newMessages =
         newTranscript.length > 1
@@ -73,7 +73,7 @@ function App() {
       setMessages(newMessages);
 
       // Convert the response text to voice
-      playResponseText(data.response);
+      playResponseText(data.data);
     } catch (error) {
       console.error("Error sending text to backend:", error);
     }
@@ -234,7 +234,7 @@ function App() {
             {isRecording && (
               <section
                 onClick={stopAudioRecording}
-                className="flex items-center gap-2 w-fit"
+                className="flex items-center gap-2 w-fit h-full"
               >
                 <Bar amplitude={amplitude} multiplier={0.4} delay={0} />
                 <Bar amplitude={amplitude} multiplier={1} delay={20} />
